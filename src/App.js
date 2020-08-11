@@ -1,24 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState, useEffect} from 'react';
 import './App.css';
+import qBank from './quizService/index';
 
 function App() {
+
+    const [questionbank, setQuestionBack] = useState([]);
+    useEffect( () => {
+        qBank().then( response => {
+           setQuestionBack(response);
+        } )
+    }
+    , [] );
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <div className="title">Quiz bee</div>
+        {
+            questionbank.length > 0 && questionbank.map( ({answer, correct, question, questionId}) => (
+                <h4 key={questionId}>{question}</h4>
+            ) )
+        }
     </div>
   );
 }
